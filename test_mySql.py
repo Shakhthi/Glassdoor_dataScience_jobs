@@ -31,6 +31,7 @@ try:
         for db in databases:
             print(f"- {db[0]}")
 
+    print("MySQL connection is successful")
 except mysql.connector.Error as e:
     raise ExceptionHandler(e, sys)
 
