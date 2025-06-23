@@ -145,9 +145,8 @@ class loadData:
         
 if __name__ == "__main__":
     data_loader = loadData()
-    train_file_path = r"D:\4.Data Wrangling\Datasets\Ds_jobs\cleaned_train_data.csv"
-    test_file_path = r"D:\4.Data Wrangling\Datasets\Ds_jobs\cleaned_test_data.csv"
-    train_records = data_loader.csv_to_json_converter(train_file_path)
+    data_file_path = r"D:\4.Data Wrangling\Datasets\Ds_jobs\cleaned_glassdoor_job_postings.csv"
+    train_records = data_loader.csv_to_json_converter(train_file_path=data_file_path)
     print(f"Number of records to insert: {len(train_records)}")
     data_loader.push_data_into_mongoDB(database="MK", collection="ds_jobs", records=train_records)
     #test_data = pd.read_csv(test_file_path)

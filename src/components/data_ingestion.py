@@ -10,6 +10,10 @@ from src.exception.exception_handler import ExceptionHandler
 from src.entity.config_entity import TrainingPipelineConfig, DataIngestionConfig
 from src.entity.artifact_entity import DataIngestionArtifact
 
+from src.components.data_validation import DataValidation
+from src.entity.config_entity import DataValidationConfig
+from src.entity.artifact_entity import DataValidationArtifact
+
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -17,6 +21,7 @@ from pymongo import MongoClient
 import mysql.connector
 from sqlalchemy import create_engine
 
+from sklearn.model_selection import train_test_split
 
 MONGODB_URL = os.getenv("MONGO_URI")
 IP = os.getenv("MYSQL_HOST")
@@ -44,6 +49,7 @@ class DataIngestion:
             if "_id" in train_data.columns.to_list():
                 train_data = train_data.drop(columns=["_id"], axis=1)
             train_data.replace({"na": np.nan}, inplace=True)
+            train_data.dropna(inplace=True)
 
             logging.info("Importing data from MongoDB collection to dataframe completed successfully")
             return train_data
@@ -74,15 +80,35 @@ class DataIngestion:
             if "connection" in locals() and connection.is_connected():
                 connection.close()
                 logging.info("MySQL connection closed")
+
+    def split_data(self, data:pd.DataFrame, test_size: float = 0.2) -> tuple:
+        """
+        Splits the data into training and testing sets.
+        
+        :param data: DataFrame to split.
+        :param test_size: Proportion of the dataset to include in the test split.
+        :return: Tuple of training and testing DataFrames.
+        """
+        try:
+            logging.info("Splitting data into training and testing sets")
+            data = self.import_data_from_mongodb()
+
+            if data.empty or data.empty:
+                raise ValueError("Dataframes are empty. Please check the data source.")
+            
+            train_data, test_data = train_test_split(data, test_size=test_size, random_state=42)
+            logging.info("Data split completed successfully")
+            return train_data, test_data
+        except Exception as e:
+            raise ExceptionHandler(e, sys)
     
     def initiate_data_ingestion(self):
         try:
             logging.info("Initiating data ingestion process")
-            train_data = self.import_data_from_mongodb()
-            test_data = self.import_data_from_mysql()
+            data = self.import_data_from_mongodb()
 
-            if train_data.empty or test_data.empty:
-                raise ValueError("Dataframes are empty. Please check the data source.")
+            data.to_csv(r"data\ds_jobs.csv", index=False, header=True)
+            train_data, test_data = self.split_data(data, test_size=self.data_ingestion_config.train_test_ratio)
 
             os.makedirs(self.data_ingestion_config.feature_store_dir, exist_ok=True)
             os.makedirs(os.path.dirname(self.data_ingestion_config.training_file_path), exist_ok=True)
@@ -100,15 +126,4 @@ class DataIngestion:
             return dataIngestionArtifact
         except Exception as e:
             raise ExceptionHandler(e, sys)
-        
-if __name__ == "__main__":
-    try:
-        
-        trainconfig = TrainingPipelineConfig()
-        print(f"{trainconfig.timestamp} - Data Ingestion started")
-        data_ingestion = DataIngestion(data_ingestion_config = DataIngestionConfig(trainconfig))
-        data_ingestion_artifact = data_ingestion.initiate_data_ingestion()
-    except Exception as e:
-        raise ExceptionHandler(e, sys)
-
         

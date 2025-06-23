@@ -30,3 +30,15 @@ DATA_INGESTION_TRAIN_TEST_RATIO =  0.2
 DATA_INGESTION_MYSQL_DATABASE_NAME: str = "ds_jobs"
 DATA_INGESTION_MYSQL_TABLE_NAME: str = "jobs"
 
+
+"""
+Data Validation constants starts with DATA_VALIDATION var name
+"""
+DATA_VALIDATION_DIR_NAME:str = "data_validation"
+DATA_VALIDATION_VALID_DIR:str = "validated"
+DATA_VALIDATION_INVALID_DIR:str = "invalid"
+DATA_VALIDATION_DRIFT_REPORT_DIR:str = "drift_report"
+DATA_VALIDATION_DRIFT_REPORT_FILE_NAME:str = "report.yaml"
+PREPROCESSING_OBJECT_FILE_NAME:str = "preprocessing.pkl"
+
+

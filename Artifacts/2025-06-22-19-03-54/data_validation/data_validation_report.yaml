@@ -1,0 +1,12 @@
+test:
+  column_datatypes: null
+  data_distribution: true
+  duplicate_rows: true
+  missing_values: true
+  number_of_columns: true
+train:
+  column_datatypes: null
+  data_distribution: true
+  duplicate_rows: false
+  missing_values: true
+  number_of_columns: true

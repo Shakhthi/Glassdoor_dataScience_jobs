@@ -1,0 +1,41 @@
+columns:
+  company: string
+  job_title: string
+  company_rating: float64
+  job_description: string
+  location: string
+  salary_avg_estimate: float64
+  salary_estimate_payperiod: string
+  company_size: string
+  company_founded: int64
+  employment_type: string
+  industry: string
+  sector: string
+  revenue: string
+  career_opportunities_rating: float64
+  comp_and_benefits_rating: float64
+  culture_and_values_rating: float64
+  senior_management_rating: float64
+  work_life_balance_rating: float64
+
+numerical_columns:
+  - company_rating
+  - salary_avg_estimate
+  - company_founded
+  - career_opportunities_rating
+  - comp_and_benefits_rating
+  - culture_and_values_rating
+  - senior_management_rating
+  - work_life_balance_rating
+
+categorical_columns:
+  - company
+  - job_title
+  - job_description
+  - location
+  - salary_estimate_payperiod
+  - company_size
+  - employment_type
+  - industry
+  - sector
+  - revenue

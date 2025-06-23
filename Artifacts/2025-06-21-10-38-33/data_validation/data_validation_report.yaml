@@ -1,0 +1,10 @@
+test:
+  column_datatypes: null
+  data_distribution: true
+  data_integrity: true
+  number_of_columns: true
+train:
+  column_datatypes: null
+  data_distribution: true
+  data_integrity: false
+  number_of_columns: true
