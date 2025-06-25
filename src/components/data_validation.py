@@ -157,46 +157,47 @@ class DataValidation:
             test_df = self.validate_and_fix(test_df, 'test')
 
             # Save fixed data
-            # Determine output folders based on validation results
-            is_valid = all(v == 'ok' for split in self.fix_report.values() for v in split.values())
+            is_valid = all(v == 'ok' or v == "fixed" for split in self.fix_report.values() for v in split.values())
             if is_valid:
-                valid_folder = os.path.join(self.data_validation_config.data_validation_dir, 'valid_data')
-                os.makedirs(valid_folder, exist_ok=True)
-                valid_train_path = os.path.join(valid_folder, 'train.csv')
-                valid_test_path = os.path.join(valid_folder, 'test.csv')
-                # Save original data (already fixed, but all checks passed)
-                train_df.to_csv(valid_train_path, index=False)
-                test_df.to_csv(valid_test_path, index=False)
-                fixed_train_path = valid_train_path
-                fixed_test_path = valid_test_path
+                # Save to valid paths from config
+                os.makedirs(os.path.dirname(self.data_validation_config.valid_train_file_path), exist_ok=True)
+                os.makedirs(os.path.dirname(self.data_validation_config.valid_test_file_path), exist_ok=True)
+                train_df.to_csv(self.data_validation_config.valid_train_file_path, index=False)
+                test_df.to_csv(self.data_validation_config.valid_test_file_path, index=False)
             else:
-                unvalid_folder = os.path.join(self.data_validation_config.data_validation_dir, 'unvalid_data')
-                fixed_folder = os.path.join(self.data_validation_config.data_validation_dir, 'fixed_data')
-                os.makedirs(unvalid_folder, exist_ok=True)
-                os.makedirs(fixed_folder, exist_ok=True)
-                # Save original (broken) data
-                orig_train_path = os.path.join(unvalid_folder, 'train.csv')
-                orig_test_path = os.path.join(unvalid_folder, 'test.csv')
-                self.read_data(self.data_ingestion_artifact.trained_file_path).to_csv(orig_train_path, index=False)
-                self.read_data(self.data_ingestion_artifact.test_file_path).to_csv(orig_test_path, index=False)
-                # Save fixed data
-                fixed_train_path = os.path.join(fixed_folder, 'fixed_train.csv')
-                fixed_test_path = os.path.join(fixed_folder, 'fixed_test.csv')
-                train_df.to_csv(fixed_train_path, index=False)
-                test_df.to_csv(fixed_test_path, index=False)
+                # Save original (broken) data to invalid paths from config
+                os.makedirs(os.path.dirname(self.data_validation_config.invalid_train_file_path), exist_ok=True)
+                os.makedirs(os.path.dirname(self.data_validation_config.invalid_test_file_path), exist_ok=True)
+                self.read_data(self.data_ingestion_artifact.trained_file_path).to_csv(self.data_validation_config.invalid_train_file_path, index=False)
+                self.read_data(self.data_ingestion_artifact.test_file_path).to_csv(self.data_validation_config.invalid_test_file_path, index=False)
+
+
+                # Save fixed data to valid paths from config
+                os.makedirs(os.path.dirname(self.data_validation_config.valid_train_file_path), exist_ok=True)
+                os.makedirs(os.path.dirname(self.data_validation_config.valid_test_file_path), exist_ok=True)
+                train_df.to_csv(self.data_validation_config.valid_train_file_path, index=False)
+                test_df.to_csv(self.data_validation_config.valid_test_file_path, index=False)
 
             # Write YAML report
-            report_path = os.path.join(self.data_validation_config.data_validation_dir, 'data_validatio_report.yaml')
+            report_path = os.path.join(self.data_validation_config.data_validation_dir, 'data_validation_report.yaml')
             with open(report_path, 'w') as f:
                 yaml.dump(self.fix_report, f)
             logging.info(f"Automated data validation and fixing report written to {report_path}")
 
+             # Log all DataValidationArtifact paths before returning
+            logging.info(f"DataValidationArtifact paths:")
+            logging.info(f"  valid_train_file_path: {self.data_validation_config.valid_train_file_path if is_valid else None}")
+            logging.info(f"  valid_test_file_path: {self.data_validation_config.valid_test_file_path if is_valid else None}")
+            logging.info(f"  invalid_train_file_path: {self.data_validation_config.invalid_train_file_path if not is_valid else None}")
+            logging.info(f"  invalid_test_file_path: {self.data_validation_config.invalid_test_file_path if not is_valid else None}")
+            logging.info(f"  drift_report_file_path: {report_path}")
+
             return DataValidationArtifact(
                 validation_status = is_valid,
-                valid_train_file_path = fixed_train_path if is_valid else None,
-                valid_test_file_path = fixed_test_path if is_valid else None,
-                invalid_train_file_path = fixed_train_path if not is_valid else None,
-                invalid_test_file_path = fixed_test_path if not is_valid else None,
+                valid_train_file_path = self.data_validation_config.valid_train_file_path if is_valid else None,
+                valid_test_file_path = self.data_validation_config.valid_test_file_path if is_valid else None,
+                invalid_train_file_path = self.data_validation_config.invalid_train_file_path if not is_valid else None,
+                invalid_test_file_path = self.data_validation_config.invalid_test_file_path if not is_valid else None,
                 drift_report_file_path = report_path
             )
         except Exception as e:

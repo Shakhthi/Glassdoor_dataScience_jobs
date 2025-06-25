@@ -5,7 +5,7 @@ import sys
 Defining common constants for the training pipeline
 """
 
-TARGET_COLUMN: str = "Result"
+TARGET_COLUMN: str = "salary_avg_estimate"
 PIPELINE_NAME: str = "Ds_jobs_pipeline"
 ARTIFACT_DIR: str = "Artifacts"
 FILE_NAME: str = "Glassdoor_job_postings.csv"
@@ -35,10 +35,23 @@ DATA_INGESTION_MYSQL_TABLE_NAME: str = "jobs"
 Data Validation constants starts with DATA_VALIDATION var name
 """
 DATA_VALIDATION_DIR_NAME:str = "data_validation"
-DATA_VALIDATION_VALID_DIR:str = "validated"
-DATA_VALIDATION_INVALID_DIR:str = "invalid"
+DATA_VALIDATION_VALID_DIR:str = "valid_data"
+DATA_VALIDATION_INVALID_DIR:str = "invalid_data"
 DATA_VALIDATION_DRIFT_REPORT_DIR:str = "drift_report"
 DATA_VALIDATION_DRIFT_REPORT_FILE_NAME:str = "report.yaml"
 PREPROCESSING_OBJECT_FILE_NAME:str = "preprocessing.pkl"
+
+"""
+Data Transformation constants starts with DATA_TRANSFORMATION var name
+"""
+
+DATA_TRANSFORMATION_DIR_NAME: str = "data_transformation"
+DATA_TRANSFORMATION_TRANSFORMED_DATA_DIR: str = "transformed"
+DATA_TRANSFORMATION_TRANSFORMED_OBJECT_DIR: str = "transformed_object"
+
+DATA_TRANSFORMATION_TRAIN_FILE_NAME: str = "train_transformed.csv"
+DATA_TRANSFORMATION_TEST_FILE_NAME: str = "test_transformed.csv"
+
+DATA_TRANSFORMATION_TRANSFORMER_OBJECT_FILE_NAME: str = "transformer.pkl"
 
 
