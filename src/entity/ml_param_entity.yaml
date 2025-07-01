@@ -1,0 +1,48 @@
+# Parameter grids for model training (used in modelTrainer.py)
+
+LinearRegression:
+  fit_intercept: [True, False]
+
+Lasso:
+  alpha: [0.001, 0.01, 0.1, 1.0, 10.0, 100.0]
+  max_iter: [100, 500, 1000]
+  selection: ['cyclic', 'random']
+
+Ridge:
+  alpha: [0.001, 0.01, 0.1, 1.0, 10.0, 100.0]
+  solver: ['auto', 'svd', 'cholesky', 'lsqr', 'saga']
+
+DecisionTreeRegressor:
+  criterion: ['squared_error', 'friedman_mse', 'absolute_error', 'poisson']
+  splitter: ['best', 'random']
+  max_depth: [None, 3, 5, 10, 20, 50]
+  # min_samples_split: [2, 5, 10]
+  # min_samples_leaf: [1, 2, 4]
+
+KNeighborsRegressor:
+  n_neighbors: [3, 5, 7, 9, 11, 15]
+  weights: ['uniform', 'distance']
+  algorithm: ['auto', 'ball_tree', 'kd_tree']
+  leaf_size: [10, 20, 30, 40]
+
+RandomForestRegressor:
+  n_estimators: [8, 16, 32, 64, 128, 256]
+  max_depth: [None, 3, 5, 10, 20, 50]
+  max_features: ['auto', 'sqrt', 'log2']
+  # min_samples_split: [2, 5, 10]
+  # min_samples_leaf: [1, 2, 4]
+
+GradientBoostingRegressor:
+  learning_rate: [0.1, 0.01, 0.05, 0.001]
+  subsample: [0.6, 0.7, 0.75, 0.85, 0.9, 1.0]
+  n_estimators: [8, 16, 32, 64, 128, 256]
+  max_depth: [3, 5, 7, 10]
+  # min_samples_split: [2, 5, 10]
+  # min_samples_leaf: [1, 2, 4]
+
+SVR:
+  kernel: ['linear', 'poly', 'rbf', 'sigmoid']
+  C: [0.01, 0.1, 1, 10, 100]
+  gamma: ['scale', 'auto']
+  epsilon: [0.01, 0.1, 0.2, 0.5, 1.0]
+

@@ -1,19 +1,30 @@
 import sys
+import warnings
 
 from src.components.data_ingestion import DataIngestion
 from src.components.data_validation import DataValidation
 from src.components.data_transformation import DataTransformation
+from src.components.model_trainer import ModelTrainer
 
-from src.constant import training_pipeline
+
 from src.entity.config_entity import (
     TrainingPipelineConfig, 
     DataIngestionConfig, 
     DataValidationConfig,
-    DataTransformationConfig)
-from src.entity.artifact_entity import (DataIngestionArtifact, DataValidationArtifact)
+    DataTransformationConfig,
+    ModelTrainerConfig)
+
+from src.entity.artifact_entity import (
+    DataIngestionArtifact, 
+    DataValidationArtifact,
+    DataTransformationArtifact,
+    ModelTrainerArtifact)
 
 from src.logging.logger import logging
 from src.exception.exception_handler import ExceptionHandler
+
+warnings.filterwarnings("ignore")
+
 
 if __name__ == '__main__':
     try:
@@ -39,8 +50,16 @@ if __name__ == '__main__':
         data_transformation = DataTransformation(data_validation_artifact=data_validation_artifact,
                                                   data_transformation_config=DataTransformationConfig(training_pipeline_config))
         logging.info("Initiating data transformation")
-        data_transformation_artifact = data_transformation.initiate_data_transformation()
+        data_transformation_artifact:DataTransformationArtifact = data_transformation.initiate_data_transformation()
 
+        # Model Trainer
+        logging.info("Initiating model training")
+        model_trainer_config = ModelTrainerConfig(training_pipeline_config)
+        model_trainer = ModelTrainer(model_trainer_config, data_transformation_artifact)
+        model_trainer_artifact: ModelTrainerArtifact = model_trainer.initiate_model_trainer()
+        logging.info("Model training completed successfully")
+
+        logging.info(f"Model Trainer Artifact: {model_trainer_artifact}")
     except Exception as e:
         raise ExceptionHandler(e, sys)  # Use ExceptionHandler to handle exceptions
     

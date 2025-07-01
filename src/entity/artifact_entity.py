@@ -20,3 +20,17 @@ class DataTransformationArtifact:
     transformed_train_file_path: str
     transformed_test_file_path: str
 
+@dataclass
+class RegressionMetricArtifact:
+    is_model_accepted: bool
+    r2_score: float
+    mean_absolute_error: float
+    mean_squared_error: float
+    root_mean_squared_error: float
+    model_accuracy_file_path: str
+    
+@dataclass
+class ModelTrainerArtifact:
+    trained_model_file_path: str
+    train_metric_artifact: RegressionMetricArtifact
+    test_metric_artifact: RegressionMetricArtifact
