@@ -10,10 +10,6 @@ from src.exception.exception_handler import ExceptionHandler
 from src.entity.config_entity import TrainingPipelineConfig, DataIngestionConfig
 from src.entity.artifact_entity import DataIngestionArtifact
 
-from src.components.data_validation import DataValidation
-from src.entity.config_entity import DataValidationConfig
-from src.entity.artifact_entity import DataValidationArtifact
-
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -49,7 +45,6 @@ class DataIngestion:
             if "_id" in train_data.columns.to_list():
                 train_data = train_data.drop(columns=["_id"], axis=1)
             train_data.replace({"na": np.nan}, inplace=True)
-            train_data.dropna(inplace=True)
 
             logging.info("Importing data from MongoDB collection to dataframe completed successfully")
             return train_data
@@ -90,8 +85,7 @@ class DataIngestion:
         :return: Tuple of training and testing DataFrames.
         """
         try:
-            logging.info("Splitting data into training and testing sets")
-            data = self.import_data_from_mongodb()
+            logging.info("Splitting data into training and testing sets") 
 
             if data.empty or data.empty:
                 raise ValueError("Dataframes are empty. Please check the data source.")
@@ -108,7 +102,11 @@ class DataIngestion:
             data = self.import_data_from_mongodb()
 
             data.to_csv(r"data\ds_jobs.csv", index=False, header=True)
-            train_data, test_data = self.split_data(data, test_size=self.data_ingestion_config.train_test_ratio)
+            logging.info("Data imported from MongoDB and saved to CSV file")
+
+            
+            preprocessed_data = pd.read_csv(r"data\cleaned_ds_jobs.csv")
+            train_data, test_data = self.split_data(preprocessed_data, test_size=self.data_ingestion_config.train_test_ratio)
 
             os.makedirs(self.data_ingestion_config.feature_store_dir, exist_ok=True)
             os.makedirs(os.path.dirname(self.data_ingestion_config.training_file_path), exist_ok=True)
@@ -126,4 +124,7 @@ class DataIngestion:
             return dataIngestionArtifact
         except Exception as e:
             raise ExceptionHandler(e, sys)
+        
+
+
         

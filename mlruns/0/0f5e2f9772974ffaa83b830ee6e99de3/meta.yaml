@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/4.Data%20Wrangling/Projects/DS_Jobs/mlruns/0/0f5e2f9772974ffaa83b830ee6e99de3/artifacts
+end_time: 1751372901876
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 0f5e2f9772974ffaa83b830ee6e99de3
+run_name: selective-snail-844
+run_uuid: 0f5e2f9772974ffaa83b830ee6e99de3
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1751372898076
+status: 3
+tags: []
+user_id: Mathan

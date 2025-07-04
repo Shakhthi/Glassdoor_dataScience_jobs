@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/4.Data%20Wrangling/Projects/DS_Jobs/mlruns/0/cf39a4e46aae464cb06b81b0ab228636/artifacts
+end_time: 1751372898063
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: cf39a4e46aae464cb06b81b0ab228636
+run_name: serious-ox-47
+run_uuid: cf39a4e46aae464cb06b81b0ab228636
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1751372891222
+status: 3
+tags: []
+user_id: Mathan
