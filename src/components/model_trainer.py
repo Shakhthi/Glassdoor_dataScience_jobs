@@ -28,6 +28,7 @@ from sklearn.svm import SVR
 import mlflow
 import dagshub
 dagshub.init(repo_owner='Shakhthi', repo_name='ds_jobs', mlflow=True)
+mlflow.set_tracking_uri("https://dagshub.com/Shakhthi/ds_jobs.mlflow")
 class ModelTrainer:
     def __init__(self, model_trainer_config: ModelTrainerConfig, data_transformation_artifact: DataTransformationArtifact):
         try:

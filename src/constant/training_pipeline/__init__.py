@@ -66,4 +66,8 @@ MODEL_TRAINER_OVER_FIITING_UNDER_FITTING_THRESHOLD: float = 0.05
 
 TRAINING_BUCKET_NAME = "ds_jobs"
 
+AWS_BUCKET_NAME: str = "ds-jobs-aws-bucket"
+
+
+
 

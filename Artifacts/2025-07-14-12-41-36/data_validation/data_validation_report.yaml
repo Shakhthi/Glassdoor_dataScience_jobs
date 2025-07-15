@@ -1,0 +1,12 @@
+test:
+  column_datatypes: ok
+  data_distribution: ok
+  duplicate_rows: ok
+  missing_values: ok
+  number_of_columns: fixed
+train:
+  column_datatypes: ok
+  data_distribution: ok
+  duplicate_rows: ok
+  missing_values: ok
+  number_of_columns: fixed
