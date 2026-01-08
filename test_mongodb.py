@@ -12,9 +12,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 MONGODB_URL = os.getenv("MONGO_URI")
-
+print("MONGODB_URL:", MONGODB_URL)
 # Create a new client and connect to the server
-client = MongoClient(MONGODB_URL, server_api=ServerApi('1'))
+client = MongoClient(MONGODB_URL, server_api=ServerApi('1'), tlsCAFile=certifi.where())
 
 # Send a ping to confirm a successful connection
 try:

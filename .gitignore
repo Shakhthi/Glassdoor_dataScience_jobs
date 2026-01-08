@@ -3,6 +3,7 @@
 AWS Credentials.txt
 ds-jobs.pem
 ec2_bootstrap.sh
+test.sh
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
