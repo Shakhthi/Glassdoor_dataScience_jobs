@@ -61,7 +61,7 @@ async def train_route():
         train_pipeline.run_pipeline()
         return Response("Training is successful")
     except Exception as e:
-        raise ExceptionHandler(e,sys)
+        raise ExceptionHandler(e, sys)
 
 @app.post("/predict")
 async def predict_route(request: Request,file: UploadFile = File(...)):
@@ -84,8 +84,8 @@ async def predict_route(request: Request,file: UploadFile = File(...)):
         return templates.TemplateResponse("table.html", {"request": request, "table": table_html})
         
     except Exception as e:
-            raise ExceptionHandler(e,sys)
+        raise ExceptionHandler(e, sys)
 
     
 if __name__=="__main__":
-    app_run(app, host="0.0.0.0", port=8080)
+    app_run(app, host="0.0.0.0", port=8000)
